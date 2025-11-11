@@ -5,6 +5,9 @@
     "paths": {
       "@/*": [
         "./*"
+      ],
+      "@env": [
+        "node_modules/react-native-dotenv/index.d.ts"
       ]
     }
   },
