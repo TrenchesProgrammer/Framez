@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Alert, Button, View,Text, Image, TextInput, StyleSheet, TouchableOpacity } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import * as FileSystem from "expo-file-system/legacy"; // <-- This line is updated
+import * as FileSystem from "expo-file-system/legacy";
 import { supabase } from "../../lib/supabase";
 import { router } from "expo-router";
 // FIX 1: Import Buffer. You may need to run `npm install buffer` in your project
@@ -49,7 +49,6 @@ export default function UploadPostImage() {
 
     try {
       const imageUrl = await uploadPostImage(imageUri);
-      console.log("imageUrl:", imageUrl);
       if (imageUrl) {
         const { data, error } = await supabase
           .from("posts")
@@ -60,7 +59,6 @@ export default function UploadPostImage() {
         }
 
         Alert.alert("Success", "Post created successfully!");
-        console.log("Inserted:", data);
         setImageUri(null);
         setText("");
       } else {
@@ -82,7 +80,6 @@ const uploadPostImage = async (uri: string) => {
     const contentType = `image/${fileExtension}`;
 
     // Read the file as a base64 string
-    // FIX 2: Use the string 'base64' directly
     const base64 = await FileSystem.readAsStringAsync(uri, {
       encoding: 'base64', 
     });
@@ -134,7 +131,6 @@ const uploadPostImage = async (uri: string) => {
       </TouchableOpacity>
       
       <TouchableOpacity 
-        // Disable button and change style while uploading or if no image
         style={[styles.btn, (isUploading || !imageUri) && styles.btnDisabled]} 
         onPress={handlePost} 
         disabled={isUploading || !imageUri}

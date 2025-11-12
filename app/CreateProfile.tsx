@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useAuth } from "../context/AuthContext";
+import { useRouter } from "expo-router";
 
 const CreateProfile = () => {
   const { createProfile } = useAuth();
@@ -14,7 +15,7 @@ const CreateProfile = () => {
   const [bio, setBio] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [full_name, setFullName] = React.useState("");
-
+  const router = useRouter();
   const handleCreateProfile = async () => {
     if (!username) {
       alert("Username cannot be empty");
@@ -26,10 +27,14 @@ const CreateProfile = () => {
     }
     setLoading(true);
     await createProfile(username, full_name, bio);
+    router.push("/");
     setLoading(false);
   };
   return (
     <View style={styles.container}>
+      <TouchableOpacity onPress={() => router.back()} style={{ marginBottom: 20 }}>
+        <Text>Back</Text>
+      </TouchableOpacity>
       <Text style={styles.title}>Create your Profile</Text>
       <Text style={styles.label}>Username</Text>
       <TextInput

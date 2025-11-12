@@ -7,6 +7,7 @@ type Profile = {
   full_name: string | null;
   avatar_url: string | null;
   bio: string | null;
+  id: string;
 };
 
 type AuthContextType = {
@@ -113,6 +114,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     } catch (error) {
       if (error instanceof Error) {
         console.warn('Error creating profile:', error.message);
+        console.log(error);
       }
     } finally {
       setLoading(false);
