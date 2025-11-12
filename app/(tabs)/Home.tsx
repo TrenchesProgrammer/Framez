@@ -4,10 +4,9 @@ import React from 'react'
 const Home = () => {
   return (
     <View>
-      <Text>Framez</Text>
+      <Text style={styles.title}>Framez</Text>
       <View style={styles.footer}>
         <View style={styles.line} />
-        
       </View>
     </View>
   )
@@ -23,5 +22,9 @@ const styles = StyleSheet.create({
         borderBottomColor: 'gray',
         borderBottomWidth: 1,
         marginTop: 10,
+    },
+    title:{
+      fontWeight: '700',
+      fontSize: 24,
     }
 })

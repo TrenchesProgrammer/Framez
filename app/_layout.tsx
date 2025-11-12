@@ -45,7 +45,7 @@ const InitialLayout = () => {
       // or the create-profile screen,
       // redirect them to the main app.
       if (inAuthGroup || segments[0] === 'CreateProfile') {
-        router.replace('/(tabs)/Home'); // Adjust if your home path is different
+        router.replace('/(tabs)/home'); // Adjust if your home path is different
       }
       return;
     }

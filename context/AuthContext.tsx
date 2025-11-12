@@ -8,12 +8,15 @@ type Profile = {
   username: string | null;
   full_name: string | null;
   avatar_url: string | null;
+  bio: string | null;
 };
 
 type AuthContextType = {
   session: Session | null;
   profile: Profile | null;
   loading: boolean;
+  createProfile: (username: string, full_name:string, bio: string, ) => Promise<void>;
+  fetchProfile: (session: Session) => Promise<void>;
 };
 
 // Create the context
@@ -84,10 +87,42 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  // The function that creates a profile
+  const createProfile = async (username: string, full_name:string, bio: string) => {
+    if (!session) {
+      throw new Error('No user session found.');
+    }
+    try {
+      setLoading(true);
+      const { error } = await supabase.from('profiles').insert({
+        id: session.user.id,
+        username,
+        full_name: full_name,
+        bio:bio,
+        updated_at: new Date().toISOString(),
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      // After creating, fetch the new profile
+      await fetchProfile(session);
+
+    } catch (error) {
+      if (error instanceof Error) {
+        console.warn('Error creating profile:', error.message);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const value = {
     session,
     profile,
     loading,
+    createProfile, // Expose the function
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
